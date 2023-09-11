@@ -1,116 +1,42 @@
-import React, { useRef, useState } from "react";
+import { React, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import mapStyles from "./leaflet.module.css";
 import "leaflet/dist/leaflet.css";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
+import "leaflet-defaulticon-compatibility";
+import imageSrc from "../public/images/profile.jpg";
+import Image from "next/image";
+import { useGlobalArrayContext } from "../context/GlobalArrayContext";
 
-const MapComponent = () => {
-  const mapRef = useRef();
-  const zoom = 16;
-  const containerStyle = {
-    width: "100%",
-    height: "400px",
-  };
-  const center = {
-    lat: 28.626137,
-    lng: 79.821603,
-  };
-  const initialMarkers = [
-    {
-      position: {
-        lat: 28.625485,
-        lng: 79.821091,
-      },
-      draggable: true,
-    },
-    {
-      position: {
-        lat: 28.625293,
-        lng: 79.817926,
-      },
-      draggable: false,
-    },
-    {
-      position: {
-        lat: 28.625182,
-        lng: 79.81464,
-      },
-      draggable: true,
-    },
-  ];
+const position = [48.271059, 25.939651];
 
-  const [markers, setMarkers] = useState(initialMarkers);
-
-  const mapClicked = async (event) => {
-    console.log(event.latlng.lat, event.latlng.lng);
-  };
-
-  const markerClicked = (marker, index) => {
-    console.log(marker.position.lat, marker.position.lng);
-  };
-
-  const markerDragEnd = (event, index) => {
-    console.log(event.lat, event.lng);
-  };
+const LeafletMap = () => {
+  const { globalArray } = useGlobalArrayContext();
 
   return (
     <MapContainer
-      style={containerStyle}
-      center={center}
-      zoom={zoom}
-      scrollWheelZoom={false}
-      ref={mapRef}
+      center={position}
+      zoom={10}
+      style={{ width: "100%", height: "400px" }}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <MapContent onClick={mapClicked} />
-      {markers.map((marker, index) => (
-        <MarkerContent
-          key={index}
-          position={marker.position}
-          draggable={marker.draggable}
-          onMarkerClick={(event) => markerClicked(marker, index)}
-          onDragEnd={(event) => markerDragEnd(event, index)}
-        />
+      {globalArray.map((item, index) => (
+        <Marker key={index} position={item}>
+          <Popup>
+            A marker at lat: {item[0]}, lng: {item[1]}
+            <Image
+              className={mapStyles.imageContainer}
+              src={imageSrc}
+              alt="Your Image"
+            />
+          </Popup>
+        </Marker>
       ))}
     </MapContainer>
   );
 };
 
-const MapContent = ({ onClick }) => {
-  const map = useMapEvents({
-    click: (event) => onClick(event),
-  });
-  return null;
-};
-
-const MarkerContent = (props) => {
-  const markerRef = useRef();
-  const { position, draggable, onMarkerClick, onDragEnd } = props;
-
-  return (
-    <Marker
-      position={position}
-      draggable={draggable}
-      eventHandlers={{
-        click: (event) => onMarkerClick(event),
-        dragend: () => onDragEnd(markerRef.current.getLatLng()),
-      }}
-      ref={markerRef}
-    >
-      <Popup>
-        <b>
-          {position.lat}, {position.lng}
-        </b>
-      </Popup>
-    </Marker>
-  );
-};
-
-export default MapComponent;
+export default LeafletMap;

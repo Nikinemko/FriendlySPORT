@@ -1,5 +1,12 @@
 import "../styles/global.css";
+import GlobalArrayProvider from "../context/GlobalArrayContext";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+function App({ Component, pageProps }) {
+  return (
+    <GlobalArrayProvider>
+      <Component {...pageProps} />
+    </GlobalArrayProvider>
+  );
 }
+
+export default App;

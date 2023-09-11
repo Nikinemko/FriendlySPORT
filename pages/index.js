@@ -5,10 +5,9 @@ import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { getSortedPostsData } from "../lib/posts";
 import Date from "../components/date";
-// import MapComponent from "../components/LeafletMap";
 import dynamic from "next/dynamic";
 
-const MapComponent = dynamic(() => import("../components/LeafletMap"), {
+const LeafletMap = dynamic(() => import("../components/LeafletMap"), {
   ssr: false,
 });
 
@@ -31,7 +30,7 @@ export default function Home({ allPostsData }) {
         <p>[Your Self Introduction]</p>
         <p>
           (This is a sample website - you’ll be building a site like this on{" "}
-          <Link href="/registration">Registration</Link>.)
+          <Link href="/registration">Put your marker on the map</Link>.)
         </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
@@ -47,7 +46,7 @@ export default function Home({ allPostsData }) {
             </li>
           ))}
         </ul>
-        <MapComponent />
+        <LeafletMap />
       </section>
     </Layout>
   );
