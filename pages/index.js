@@ -27,9 +27,13 @@ export default function Home({ allPostsData }) {
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>[Your Self Introduction]</p>
         <p>
-          (This is a sample website - you’ll be building a site like this on{" "}
+          On this web page you can put your marks on map, so others can see
+          sport related places like: basketball courts, football courts, etc
+        </p>
+        <p>
+          (This is a sample website - you can set your marks here:{" "}
+          <span> </span>
           <Link href="/registration">Put your marker on the map</Link>.)
         </p>
       </section>

@@ -8,7 +8,7 @@ import imageSrc from "../public/images/profile.jpg";
 import Image from "next/image";
 import { useGlobalArrayContext } from "../context/GlobalArrayContext";
 
-const position = [48.271059, 25.939651];
+const position = [59.3131671, 18.0708653];
 
 const LeafletMap = () => {
   const { globalArray } = useGlobalArrayContext();
